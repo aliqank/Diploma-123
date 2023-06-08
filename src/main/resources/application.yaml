@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/autoparts?reWriteBatchedInserts=true
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        hbm2ddl.auto: update
+        jdbc:
+          batch_size: 4
+        order_updates: true
+        dialect:
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+server:
+  tomcat:
+    relaxed-query-chars: '|,{,},[,]'
+
+application:
+  appVersion: 1
+  appDescription: 1
+  jwtSecret: TxYXGh85UCTAmdQGsRJP
+  jwtExpirationMin: 30
+  fileStorePath: /opt/project/store
+host:
+  name:

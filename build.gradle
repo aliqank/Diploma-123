@@ -1,0 +1,79 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.6.2'
+	id 'io.spring.dependency-management' version '1.1.0'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id 'com.palantir.docker' version '0.22.1'
+}
+
+group = 'com.autoparts'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+
+sourceSets {
+	main.java.srcDirs += "$buildDir/generated/sources/annotationProcessor/java/main"
+}
+
+configurations {
+	querydsl.extendsFrom annotationProcessor, implementation, compilyOnly, runtimeOnly
+}
+
+repositories {
+	mavenCentral()
+}
+
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.liquibase:liquibase-core'
+	implementation 'com.github.ozlerhakan:poiji:3.1.9'
+	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+	implementation 'com.amazonaws:aws-java-sdk:1.12.364'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.6'
+	implementation 'com.querydsl:querydsl-jpa'
+	implementation 'org.apache.poi:poi:5.2.2'
+	implementation 'org.apache.poi:poi-ooxml:5.2.2'// https://mvnrepository.com/artifact/io.github.rushuat/ocell
+	implementation 'io.github.rushuat:ocell:0.1.7'
+
+	implementation 'com.avast.gradle.docker-compose:com.avast.gradle.docker-compose.gradle.plugin:0.16.12'
+
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+
+	annotationProcessor 'com.querydsl:querydsl-apt'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+}
+querydsl {
+	jpa = true
+	library = 'com.querydsl:querydsl-apt:5.0.0'
+	querydslSourcesDir = "$buildDir/generated/sources/annotationProcessor/java/main"
+}
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'com.autoparts.AutoPartsApplication'
+	}
+}
+
